@@ -1,0 +1,218 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+}
+
+#splash {
+  height: 100vh;
+  background-color: #ffffff;
+  color: #b30000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+#splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash .logo {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  animation: logoPop 1.5s ease-out forwards;
+}
+
+#splash h1 {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 0.3s;
+}
+
+#splash p {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes logoPop {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#main-content {
+  padding: 20px;
+  animation: contentFadeIn 1.2s ease-in forwards;
+  display: block; /* Garantido que o conteúdo estará visível */
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  text-align: center;
+  color: #b30000;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+/* Card de veículos */
+.card {
+  background-color: #fff;
+  border: 2px solid #b30000;
+  border-radius: 10px;
+  margin: 10px auto;
+  padding: 15px;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card button {
+  width: 100%;
+  background-color: #b30000;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card button:hover,
+.card button:active {
+  background-color: #c40000;
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(179, 0, 0, 0.3);
+}
+
+.details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.details.active {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.resolver-btn {
+  margin-top: 10px;
+  background-color: #008000;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+}
+
+.resolver-btn:hover,
+.resolver-btn:active {
+  background-color: #00b300;
+  transform: scale(1.02);
+}
+
+.resolver-btn.resolvido {
+  background-color: #28a745;
+  cursor: default;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+  transform: scale(1.01);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 600px) {
+  body {
+      padding: 10px;
+  }
+
+  h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+  }
+
+  #splash .logo {
+      width: 140px;
+  }
+
+  .card {
+      padding: 12px;
+      border-width: 1.5px;
+  }
+
+  .card button {
+      font-size: 14px;
+      padding: 10px;
+  }
+
+  .resolver-btn {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .details p {
+      font-size: 14px;
+      line-height: 1.4;
+  }
+}
+
+/* Estilo do botão principal com animação fluida */
+.main-btn {
+  transition: background-color 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.main-btn:hover,
+.main-btn:active {
+  transform: scale(1.03);
+  background-color: #c40000;
+  box-shadow: 0 0 8px rgba(196, 0, 0, 0.4);
+}
+
+/* Estilo do botão principal resolvido */
+.resolvido-main {
+  background-color: #28a745 !important;
+  color: #fff !important;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+  transform: scale(1.01);
+}
+
+.resolvido-main:hover,
+.resolvido-main:active {
+  background-color: #45cc65 !important;
+  box-shadow: 0 0 12px rgba(40, 167, 69, 0.8);
+}

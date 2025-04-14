@@ -1,0 +1,207 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #0f5ccc;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.home-container {
+  text-align: center;
+}
+
+.home-container button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 15px auto;
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.home-container button:hover {
+  background-color: #0f5ccc;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .home-container button {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Estilos para os botões daa tela de cadastro - ajustes no formato */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Maior espaçamento entre os botões */
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 15px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 10px; /* Bordas mais arredondadas */
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%; /* Ocupa toda a largura do container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.buttons button:hover {
+  background-color: #0f5ccc;
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.buttons button:active {
+  background-color: #0d47a1; /* Cor mais escura quando pressionado */
+  transform: scale(0.98); /* Efeito de "pressionamento" */
+}
+/* Adicionando formatação para os botões na tela de cadastro de veículos */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 15px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%; /* Os botões ocupam toda a largura do container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.buttons button:hover {
+  background-color: #0f5ccc;
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.buttons button:active {
+  background-color: #0d47a1; /* Cor mais escura quando pressionado */
+  transform: scale(0.98); /* Efeito de "pressionamento" */
+}
+
+/* Formatação para o restante da tela */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.form-container label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.form-container textarea {
+  height: 100px;
+}
+
+.checkboxs {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkboxs label {
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    width: 100%;
+    padding: 1.5rem;
+  }
+}
