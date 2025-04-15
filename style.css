@@ -205,3 +205,28 @@ body {
     padding: 1.5rem;
   }
 }
+/* Adiciona estilos ao botão fixo na parte inferior */
+#back-button {
+  position: fixed;
+  bottom: 30px;
+  left: 100%;
+  transform: translateX(-50%);
+  padding: 100px 24px;
+  background-color: #8B0000; /* Cor vermelho escuro */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+#back-button:hover {
+  background-color: #a40000; /* Um tom mais claro de vermelho escuro */
+}
+
+#back-button:active {
+  transform: translateX(-50%) scale(0.95); /* Animação de clique */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+}
