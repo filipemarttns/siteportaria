@@ -11,29 +11,29 @@
     <h2>Cadastro de Veículo</h2>
 
     <label for="usuario">Nome do Usuário</label>
-    <select id="usuario">
-      <option>Selecione</option>
-      <option>2590</option>
-      <option>2569</option>
-      <option>2482</option>
-      <option>2130</option>
+    <select id="usuario" required>
+      <option value="">Selecione</option>
+      <option value="2590">2590</option>
+      <option value="2569">2569</option>
+      <option value="2482">2482</option>
+      <option value="2130">2130</option>
     </select>
 
     <label for="placa">Número de Frota</label>
-    <input type="text" id="placa" placeholder="Número do veículo"/>
+    <input type="text" id="placa" placeholder="Número do veículo" required/>
 
     <label for="hodometro">Hodômetro</label>
-    <input type="text" id="hodometro" placeholder="Digite a quilometragem"/>
+    <input type="text" id="hodometro" placeholder="Digite a quilometragem" required/>
 
     <label for="movimentacao">Tipo de Movimentação</label>
-    <select id="movimentacao">
-      <option>Selecione</option>
-      <option>Entrada</option>
-      <option>Saída</option>
+    <select id="movimentacao" required>
+      <option value="">Selecione</option>
+      <option value="Entrada">Entrada</option>
+      <option value="Saída">Saída</option>
     </select>
 
     <label for="motorista">Motorista</label>
-    <input type="text" id="motorista" placeholder="Nome do motorista"/>
+    <input type="text" id="motorista" placeholder="Nome do motorista" required/>
 
     <label>Status</label>
     <div class="checkboxes">
@@ -48,20 +48,22 @@
     <textarea id="observacoes" placeholder="Digite observações sobre o veículo"></textarea>
 
     <label for="urgencia">Urgência</label>
-    <select id="urgencia">
-      <option>Selecione a urgência</option>
-      <option>Baixa</option>
-      <option>Média</option>
-      <option>Alta</option>
-      <option>OK</option>
+    <select id="urgencia" required>
+      <option value="">Selecione a urgência</option>
+      <option value="Baixa">Baixa</option>
+      <option value="Média">Média</option>
+      <option value="Alta">Alta</option>
+      <option value="OK">OK</option>
     </select>
 
     <div class="buttons">
       <button id="cadastrarBtn">Cadastrar</button>
       <button id="voltarBtn" onclick="window.location.href='tela_inicial.html'">Voltar</button>
     </div>
+
+    <p id="statusMessage"></p> <!-- Mensagem de status -->
   </div>
 
-  <script src="cadastro.js"></script>
+  <script type="module" src="cadastro.js"></script>
 </body>
 </html>
