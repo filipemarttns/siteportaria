@@ -12,10 +12,14 @@
     <div id="data-container"></div>
   </div>
 
+  <!-- Configuração do Firebase -->
+  <script type="module" src="config.js"></script>
+
   <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
-  <script src="config.js"></script>
-  <script src="consulta.js?v=10"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js"></script>
+
+  <!-- Script principal, agora como módulo -->
+  <script type="module" src="consulta.js?v=10"></script>
 </body>
 </html>
