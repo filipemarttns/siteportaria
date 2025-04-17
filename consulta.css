@@ -243,3 +243,14 @@ h1 {
   transform: translateX(-50%) scale(0.95) !important; /* Animação de clique */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
+/* Estilo para o botão de "Marcar como Resolvido" quando o veículo estiver resolvido */
+.resolvido-main {
+  background-color: #006400; /* Cor verde para "Resolvido" */
+  color: white;
+  cursor: default;
+}
+
+.resolver-btn.resolvido {
+  background-color: #006400; /* Cor verde mais escura para o botão resolvido */
+  cursor: default;
+}

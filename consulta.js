@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
 // Inicia o Firebase com a configuração que está no config.js
 const firebaseConfig = {
@@ -42,9 +42,9 @@ async function carregarDados() {
 
     console.log("Dados carregados com sucesso!");
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const docId = doc.id;
+    snapshot.forEach(docSnapshot => {
+      const data = docSnapshot.data();
+      const docId = docSnapshot.id;
       console.log("Carregando veículo:", data);
 
       // Criação do card
@@ -65,7 +65,7 @@ async function carregarDados() {
       // Detalhes do card
       const details = document.createElement("div");
       details.className = "details";
-      details.innerHTML = `
+      details.innerHTML = ` 
         <p><strong>Data/Hora:</strong> ${data.data_hora}</p>
         <p><strong>Movimentação:</strong> ${data.movimentacao}</p>
         <p><strong>Urgência:</strong> ${data.urgencia}</p>
@@ -86,17 +86,22 @@ async function carregarDados() {
       const resolverBtn = details.querySelector(`#btn-${docId}`);
       if (!data.resolvido_por) {
         resolverBtn.onclick = async () => {
-          await db.collection("veiculos").doc(docId).update({
-            resolvido_por: "Web"
-          });
-          details.querySelector(`#resolvido-${docId}`).textContent = "Web";
-          resolverBtn.textContent = "Resolvido";
-          resolverBtn.classList.add("resolvido");
-          resolverBtn.disabled = true;
+          try {
+            // Corrigido: usando o método doc e updateDoc corretamente
+            await updateDoc(doc(db, "veiculos", docId), {
+              resolvido_por: "Web" // Atualizando com "Web" como exemplo de quem resolveu
+            });
+            details.querySelector(`#resolvido-${docId}`).textContent = "Web"; // Atualiza a visualização no card
+            resolverBtn.textContent = "Resolvido";
+            resolverBtn.classList.add("resolvido");
+            resolverBtn.disabled = true; // Desabilita o botão de resolver após a marcação
 
-          // Marcar botão principal como resolvido também
-          button.classList.add("resolvido-main");
-          button.style.cursor = "default";
+            // Muda o botão principal para verde
+            button.classList.add("resolvido-main");
+            button.style.cursor = "default";
+          } catch (error) {
+            console.error("Erro ao marcar como resolvido: ", error);
+          }
         };
       }
 
