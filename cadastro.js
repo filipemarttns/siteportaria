@@ -1,11 +1,11 @@
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { app } from './config.js'; // Certifique-se que o caminho está correto
 
 const db = getFirestore(app); // Inicializa o Firestore com a app do Firebase
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Botão Cadastrar
   const cadastrarBtn = document.getElementById('cadastrarBtn');
+  
   if (cadastrarBtn) {
     // Estilização do botão
     cadastrarBtn.style.backgroundColor = '#1a73e8';
@@ -58,8 +58,20 @@ window.addEventListener('DOMContentLoaded', () => {
           alert("Preencha todos os campos obrigatórios e marque pelo menos um status.");
           return;
         }
-    
+        
+        if (movimentacao.toLowerCase().trim() === "saída") {
+          const q = query(collection(db, "veiculos"), where("placa", "==", placa));
+          const querySnapshot = await getDocs(q);
+          for (const docSnap of querySnapshot.docs) {
+            await deleteDoc(doc(db, "veiculos", docSnap.id));
+          }
+        
+          alert("Registro de saída concluído. Veículo saiu da garagem.");
+          return; // bloqueia o cadastro
+        }
+
         for (const status of statusMarcados) {
+          // Adiciona o novo registro
           await addDoc(collection(db, "veiculos"), {
             data_hora,
             hodometro,
@@ -73,10 +85,9 @@ window.addEventListener('DOMContentLoaded', () => {
             resolvido_por: null,
           });
         }
-    
+
         alert("Cadastros enviados com sucesso!");
-    
-        // Limpa os campos
+
         document.getElementById("usuario").value = "";
         document.getElementById("placa").value = "";
         document.getElementById("hodometro").value = "";
@@ -91,7 +102,6 @@ window.addEventListener('DOMContentLoaded', () => {
         alert("Erro ao enviar cadastro. Tente novamente.");
       }
     });
-    
   }
 
   // Botão Voltar
