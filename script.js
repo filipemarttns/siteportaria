@@ -24,7 +24,9 @@ function login() {
   }
 
   if (users[username] && users[username] === password) {
-    // Redireciona para a página inicial caso login seja bem-sucedido
+    // Salva o usuário logado
+    localStorage.setItem("usuarioAtual", username);
+    // Redireciona para a página inicial
     window.location.href = "tela_inicial.html";
   } else {
     // Caso o login falhe, exibe uma mensagem de erro
@@ -40,5 +42,3 @@ document.addEventListener("keypress", function(event) {
     login();
   }
 });
-
-// Estilos e ações para tela de cadastro

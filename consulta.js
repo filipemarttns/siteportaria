@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-// Inicia o Firebase com a configuração que está no config.js
 const firebaseConfig = {
   apiKey: "AIzaSyBSLrxQH6k1XGWq93WYENzplqJ6DRTqEf8",
   authDomain: "controle-de-portaria-c2ba6.firebaseapp.com",
@@ -12,57 +11,75 @@ const firebaseConfig = {
   measurementId: "G-05W3SNZFVV"
 };
 
-// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const users = {
+  "Trafego - Rouxinol": "trafego2025",
+  "CCO - Rouxinol": "controlerotas2025",
+  "Mecanica - Rouxinol": "mecanicarouxinol2025",
+  "Analista - Rouxinol": "analistarouxinol2026",
+  "Limpeza - Rouxinol": "limopezarouxinol",
+  "Manutenção - Rouxinol": "manutençãorouxinol2025",
+  "Supervisor - Rouxinol": "supervisor@2025",
+  "Clever - Rouxinol": "clevercastro@2026",
+  "Analista - Maxsim": "analistadados2"
+};
+
+const statusPermitidoPorUsuario = {
+  "trafego2025": null,
+  "controlerotas2025": null,
+  "mecanicarouxinol2025": ["Abastecer", "Manutenção preventiva", "Manutenção corretiva"],
+  "analistarouxinol2026": null,
+  "limopezarouxinol": ["Limpar"],
+  "manutençãorouxinol2025": ["Limpar"],
+  "supervisor@2025": null,
+  "clevercastro@2026": null,
+  "analistadados2": null
+};
+
+function obterUsuarioAtual() {
+  return localStorage.getItem("usuarioAtual");
+}
+
 async function carregarDados() {
   const container = document.getElementById("data-container");
-
-  if (!container) {
-    console.error("Elemento container não encontrado.");
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = "<p>Carregando...</p>";
 
   try {
-    console.log("Tentando carregar dados...");
     const snapshot = await getDocs(collection(db, "veiculos"));
-
-    console.log("Snapshot recebido:", snapshot);
-
-    container.innerHTML = ""; // Limpa a área de carregamento
-
+    container.innerHTML = "";
     if (snapshot.empty) {
-      console.log("Nenhum dado encontrado.");
       container.innerHTML = "<p>Nenhum dado encontrado.</p>";
       return;
     }
 
-    console.log("Dados carregados com sucesso!");
+    const nomeUsuario = obterUsuarioAtual();
+    const senhaUsuario = users[nomeUsuario];
+    const statusPermitidos = statusPermitidoPorUsuario[senhaUsuario] || null;
 
     snapshot.forEach(docSnapshot => {
       const data = docSnapshot.data();
       const docId = docSnapshot.id;
-      console.log("Carregando veículo:", data);
 
-      // Criação do card
+      const statusArray = Array.isArray(data.status) ? data.status : [data.status];
+      const podeVer = !statusPermitidos || statusArray.some(status => statusPermitidos.includes(status));
+
+      if (!podeVer) return;
+
       const card = document.createElement("div");
       card.className = "card";
 
-      // Botão de veículo
       const button = document.createElement("button");
-      button.textContent = `Veículo: ${data.placa} - ${Array.isArray(data.status) ? data.status.join(", ") : data.status}`;
+      button.textContent = `Veículo: ${data.placa} - ${statusArray.join(", ")}`;
       button.classList.add("main-btn");
-
-      // Estilo especial para resolvido
       if (data.resolvido_por) {
         button.classList.add("resolvido-main");
         button.style.cursor = "default";
       }
 
-      // Detalhes do card
       const details = document.createElement("div");
       details.className = "details";
       details.innerHTML = ` 
@@ -87,16 +104,13 @@ async function carregarDados() {
       if (!data.resolvido_por) {
         resolverBtn.onclick = async () => {
           try {
-            // Corrigido: usando o método doc e updateDoc corretamente
             await updateDoc(doc(db, "veiculos", docId), {
-              resolvido_por: "Web" // Atualizando com "Web" como exemplo de quem resolveu
+              resolvido_por: nomeUsuario || "Web"
             });
-            details.querySelector(`#resolvido-${docId}`).textContent = "Web"; // Atualiza a visualização no card
+            details.querySelector(`#resolvido-${docId}`).textContent = nomeUsuario || "Web";
             resolverBtn.textContent = "Resolvido";
             resolverBtn.classList.add("resolvido");
-            resolverBtn.disabled = true; // Desabilita o botão de resolver após a marcação
-
-            // Muda o botão principal para verde
+            resolverBtn.disabled = true;
             button.classList.add("resolvido-main");
             button.style.cursor = "default";
           } catch (error) {
@@ -109,14 +123,12 @@ async function carregarDados() {
       card.appendChild(details);
       container.appendChild(card);
     });
-
   } catch (error) {
     console.error("Erro ao carregar dados: ", error);
     container.innerHTML = "<p>Erro ao carregar dados.</p>";
   }
 }
 
-// Carrega os dados diretamente ao carregar a página
 window.addEventListener('load', () => {
   carregarDados();
 });
