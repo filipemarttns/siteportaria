@@ -42,7 +42,7 @@ function obterUsuarioAtual() {
   return localStorage.getItem("usuarioAtual");
 }
 
-async function carregarDados() {
+async function carregarDados(placaPesquisa = "") {
   const container = document.getElementById("data-container");
   if (!container) return;
 
@@ -70,6 +70,11 @@ async function carregarDados() {
       const podeVer = !statusPermitidos || statusArray.some(status => statusPermitidos.includes(status));
 
       if (!podeVer) return;
+
+      // Se houver uma placa de pesquisa, filtra pelo número da placa
+      if (placaPesquisa && !data.placa.toLowerCase().includes(placaPesquisa.toLowerCase())) {
+        return;
+      }
 
       vehiclesData.push({ data, docId });
     });
@@ -153,6 +158,12 @@ async function carregarDados() {
     container.innerHTML = "<p>Erro ao carregar dados.</p>";
   }
 }
+
+// Adiciona o evento de pesquisa
+document.getElementById('search-input').addEventListener('input', (event) => {
+  const placaPesquisa = event.target.value;
+  carregarDados(placaPesquisa);
+});
 
 window.addEventListener('load', () => {
   carregarDados();
