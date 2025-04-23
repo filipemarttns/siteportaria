@@ -60,6 +60,8 @@ async function carregarDados() {
     const senhaUsuario = users[nomeUsuario];
     const statusPermitidos = statusPermitidoPorUsuario[senhaUsuario] || null;
 
+    let vehiclesData = [];
+
     snapshot.forEach(docSnapshot => {
       const data = docSnapshot.data();
       const docId = docSnapshot.id;
@@ -69,6 +71,29 @@ async function carregarDados() {
 
       if (!podeVer) return;
 
+      vehiclesData.push({ data, docId });
+    });
+
+    // Ordena os veículos com base na urgência e se estão resolvidos
+    vehiclesData.sort((a, b) => {
+      const urgenciaA = a.data.urgencia || "Baixa"; // Assumindo que "Baixa" seja a urgência mais baixa
+      const urgenciaB = b.data.urgencia || "Baixa";
+
+      const prioridades = ["Alta", "Média", "Baixa"]; // Definindo prioridades
+
+      // Caso o veículo esteja resolvido, ele deve aparecer por último
+      if (a.data.resolvido_por && !b.data.resolvido_por) {
+        return 1;
+      } else if (!a.data.resolvido_por && b.data.resolvido_por) {
+        return -1;
+      }
+
+      // Se ambos estiverem resolvidos ou não, ordena pela urgência
+      return prioridades.indexOf(urgenciaA) - prioridades.indexOf(urgenciaB);
+    });
+
+    vehiclesData.forEach(({ data, docId }) => {
+      const statusArray = Array.isArray(data.status) ? data.status : [data.status];
       const card = document.createElement("div");
       card.className = "card";
 
