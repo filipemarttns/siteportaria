@@ -71,7 +71,6 @@ async function carregarDados(placaPesquisa = "") {
 
       if (!podeVer) return;
 
-      // Se houver uma placa de pesquisa, filtra pelo número da placa
       if (placaPesquisa && !data.placa.toLowerCase().includes(placaPesquisa.toLowerCase())) {
         return;
       }
@@ -79,21 +78,17 @@ async function carregarDados(placaPesquisa = "") {
       vehiclesData.push({ data, docId });
     });
 
-    // Ordena os veículos com base na urgência e se estão resolvidos
     vehiclesData.sort((a, b) => {
-      const urgenciaA = a.data.urgencia || "Baixa"; // Assumindo que "Baixa" seja a urgência mais baixa
+      const urgenciaA = a.data.urgencia || "Baixa";
       const urgenciaB = b.data.urgencia || "Baixa";
+      const prioridades = ["Alta", "Média", "Baixa"];
 
-      const prioridades = ["Alta", "Média", "Baixa"]; // Definindo prioridades
-
-      // Caso o veículo esteja resolvido, ele deve aparecer por último
       if (a.data.resolvido_por && !b.data.resolvido_por) {
         return 1;
       } else if (!a.data.resolvido_por && b.data.resolvido_por) {
         return -1;
       }
 
-      // Se ambos estiverem resolvidos ou não, ordena pela urgência
       return prioridades.indexOf(urgenciaA) - prioridades.indexOf(urgenciaB);
     });
 
@@ -102,11 +97,37 @@ async function carregarDados(placaPesquisa = "") {
       const card = document.createElement("div");
       card.className = "card";
 
-      const button = document.createElement("button");
-      button.textContent = `Veículo: ${data.placa} - ${statusArray.join(", ")}`;
-      button.classList.add("main-btn");
-      if (data.resolvido_por) {
+      // Criação do botão
+const button = document.createElement('button');
+button.classList.add('btn-resolver');
+
+// Aqui verifica corretamente o status:
+if (veiculo.status && veiculo.status.includes("Está OK")) {
+  button.textContent = "Resolvido";
+  button.disabled = true;
+  button.style.backgroundColor = "green";
+  button.style.color = "#fff";
+  button.style.cursor = "default";
+} else {
+  button.textContent = "Marcar como Resolvido";
+  button.addEventListener('click', () => {
+    button.textContent = "Resolvido";
+    button.disabled = true;
+    button.style.backgroundColor = "green";
+    button.style.color = "#fff";
+    button.style.cursor = "default";
+
+    // Opcional: aqui você pode atualizar no Firebase também
+  });
+}
+
+
+      const ehOk = statusArray.some(status => status.toLowerCase() === "está ok");
+
+      if (data.resolvido_por || ehOk) {
         button.classList.add("resolvido-main");
+        button.style.backgroundColor = "green";
+        button.style.color = "#fff";
         button.style.cursor = "default";
       }
 
@@ -120,9 +141,9 @@ async function carregarDados(placaPesquisa = "") {
         <p><strong>Hodômetro:</strong> ${data.hodometro}</p>
         <p><strong>Observações:</strong> ${data.observacoes}</p>
         <p><strong>Usuário Cadastro:</strong> ${data.usuario_cadastro}</p>
-        <p><strong>Resolvido por:</strong> <span id="resolvido-${docId}">${data.resolvido_por || 'N/A'}</span></p>
-        <button class="resolver-btn ${data.resolvido_por ? 'resolvido' : ''}" id="btn-${docId}" ${data.resolvido_por ? 'disabled' : ''}>
-          ${data.resolvido_por ? 'Resolvido' : 'Marcar como Resolvido'}
+        <p><strong>Resolvido por:</strong> <span id="resolvido-${docId}">${data.resolvido_por || (ehOk ? nomeUsuario : 'N/A')}</span></p>
+        <button class="resolver-btn ${data.resolvido_por || ehOk ? 'resolvido' : ''}" id="btn-${docId}" ${data.resolvido_por || ehOk ? 'disabled' : ''}>
+          ${data.resolvido_por || ehOk ? 'Resolvido' : 'Marcar como Resolvido'}
         </button>
       `;
 
@@ -131,7 +152,7 @@ async function carregarDados(placaPesquisa = "") {
       };
 
       const resolverBtn = details.querySelector(`#btn-${docId}`);
-      if (!data.resolvido_por) {
+      if (!data.resolvido_por && !ehOk) {
         resolverBtn.onclick = async () => {
           try {
             await updateDoc(doc(db, "veiculos", docId), {
@@ -143,6 +164,8 @@ async function carregarDados(placaPesquisa = "") {
             resolverBtn.disabled = true;
             button.classList.add("resolvido-main");
             button.style.cursor = "default";
+            button.style.backgroundColor = "green";
+            button.style.color = "#fff";
           } catch (error) {
             console.error("Erro ao marcar como resolvido: ", error);
           }
@@ -159,7 +182,6 @@ async function carregarDados(placaPesquisa = "") {
   }
 }
 
-// Adiciona o evento de pesquisa
 document.getElementById('search-input').addEventListener('input', (event) => {
   const placaPesquisa = event.target.value;
   carregarDados(placaPesquisa);
