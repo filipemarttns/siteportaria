@@ -51,10 +51,11 @@ window.addEventListener('DOMContentLoaded', () => {
         .filter(checkbox => checkbox.checked)
         .map(checkbox => checkbox.value);
     
-      const data = new Date();
-      data.setHours(data.getHours() - 3); 
-      const data_hora = data.toISOString().replace('T', ' ').split('.')[0];
-      
+        const data = new Date();
+        data.setHours(data.getHours() - 3);
+        const data_hora = data.toISOString().replace('T', ' ').split('.')[0];
+        
+    
       try {
         if (!usuario || !placa || !hodometro || !movimentacao || !motorista || !urgencia || statusMarcados.length === 0) {
           alert("Preencha todos os campos obrigatórios e marque pelo menos um status.");
@@ -71,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
           alert("Registro de saída concluído. Veículo saiu da garagem.");
           return; // bloqueia o cadastro
         }
-    
+
         for (let status of statusMarcados) {
           let resolvido = false;
         
@@ -96,14 +97,15 @@ window.addEventListener('DOMContentLoaded', () => {
           if (resolvido) {
             const resolverButton = document.getElementById('resolverBtn');
             if (resolverButton) {
-              resolverButton.classList.add('resolvido');
+              resolverButton.classList.add('Tudo Ok!');
               resolverButton.disabled = true;
             }
           }
         }
-    
+        
+
         alert("Cadastros enviados com sucesso!");
-    
+
         document.getElementById("usuario").value = "";
         document.getElementById("placa").value = "";
         document.getElementById("hodometro").value = "";
