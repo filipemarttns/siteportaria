@@ -131,20 +131,82 @@ async function carregarDados(placaPesquisa = "") {
       const resolverBtn = details.querySelector(`#btn-${docId}`);
       if (!data.resolvido_por) {
         resolverBtn.onclick = async () => {
+          const statusArray = Array.isArray(data.status) ? data.status : [data.status];
+        
+          // Verifica se é tarefa de limpeza
+          const isLimpeza = statusArray.includes("Limpeza") || statusArray.includes("Limpar");
+        
+          if (isLimpeza) {
+            // Exibe o popup de tipo de limpeza
+            const popup = document.getElementById("popup-limpeza");
+            popup.style.display = "flex";
+        
+            const confirmar = document.getElementById("confirmar-limpeza");
+            const cancelar = document.getElementById("cancelar-limpeza");
+        
+            const confirmarHandler = async () => {
+              const selecionado = document.querySelector('input[name="tipoLimpeza"]:checked');
+              if (!selecionado) {
+                alert("Por favor, selecione um tipo de limpeza.");
+                return;
+              }
+        
+              const tipoLimpeza = selecionado.value;
+        
+              try {
+                await updateDoc(doc(db, "veiculos", docId), {
+                  resolvido_por: nomeUsuario || "Web",
+                  tipo_limpeza: tipoLimpeza,
+                  status: tipoLimpeza
+                });
+        
+                details.querySelector(`#resolvido-${docId}`).textContent = nomeUsuario || "Web";
+                resolverBtn.textContent = "Resolvido";
+                resolverBtn.classList.add("resolvido");
+                resolverBtn.disabled = true;
+                button.classList.add("resolvido-main");
+                button.style.cursor = "default";
+        
+                popup.style.display = "none";
+                confirmar.removeEventListener("click", confirmarHandler);
+                cancelar.removeEventListener("click", cancelarHandler);
+        
+              } catch (error) {
+                console.error("Erro ao atualizar tipo de limpeza: ", error);
+              }
+            };
+        
+            const cancelarHandler = () => {
+              popup.style.display = "none";
+              confirmar.removeEventListener("click", confirmarHandler);
+              cancelar.removeEventListener("click", cancelarHandler);
+            };
+        
+            confirmar.addEventListener("click", confirmarHandler);
+            cancelar.addEventListener("click", cancelarHandler);
+        
+            return;
+          
+          }
+        
+          // Se não for limpeza, apenas marca como resolvido
           try {
             await updateDoc(doc(db, "veiculos", docId), {
               resolvido_por: nomeUsuario || "Web"
             });
+        
             details.querySelector(`#resolvido-${docId}`).textContent = nomeUsuario || "Web";
             resolverBtn.textContent = "Resolvido";
             resolverBtn.classList.add("resolvido");
             resolverBtn.disabled = true;
             button.classList.add("resolvido-main");
             button.style.cursor = "default";
+        
           } catch (error) {
             console.error("Erro ao marcar como resolvido: ", error);
           }
         };
+        
       }
 
       card.appendChild(button);
@@ -161,6 +223,14 @@ document.getElementById('search-input').addEventListener('input', (event) => {
   const placaPesquisa = event.target.value;
   carregarDados(placaPesquisa);
 });
+
+function abrirPopup() {
+  document.getElementById('popup').style.display = 'flex';
+}
+
+function fecharPopup() {
+  document.getElementById('popup').style.display = 'none';
+}
 
 window.addEventListener('load', () => {
   carregarDados();
