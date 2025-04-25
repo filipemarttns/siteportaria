@@ -1,13 +1,12 @@
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { app } from './config.js'; // Certifique-se que o caminho está correto
+import { app } from './config.js';
 
-const db = getFirestore(app); // Inicializa o Firestore com a app do Firebase
+const db = getFirestore(app);
 
 window.addEventListener('DOMContentLoaded', () => {
   const cadastrarBtn = document.getElementById('cadastrarBtn');
   
   if (cadastrarBtn) {
-    // Estilização do botão
     cadastrarBtn.style.backgroundColor = '#1a73e8';
     cadastrarBtn.style.color = '#fff';
     cadastrarBtn.style.border = 'none';
@@ -19,7 +18,6 @@ window.addEventListener('DOMContentLoaded', () => {
     cadastrarBtn.style.width = '100%';
     cadastrarBtn.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
 
-    // Efeitos de interação
     cadastrarBtn.addEventListener('mouseover', () => {
       cadastrarBtn.style.backgroundColor = '#0f5ccc';
     });
@@ -36,7 +34,6 @@ window.addEventListener('DOMContentLoaded', () => {
       cadastrarBtn.style.transform = 'scale(1)';
     });
 
-    // Evento de cadastro no Firebase
     cadastrarBtn.addEventListener("click", async () => {
       const usuario = document.getElementById("usuario").value;
       const placa = document.getElementById("placa").value.trim();
@@ -70,9 +67,9 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         
           alert("Registro de saída concluído. Veículo saiu da garagem.");
-          return; // bloqueia o cadastro
+          return;
         }
-
+        
         for (let status of statusMarcados) {
           let resolvido = false;
         
@@ -102,8 +99,6 @@ window.addEventListener('DOMContentLoaded', () => {
             }
           }
         }
-        
-
         alert("Cadastros enviados com sucesso!");
 
         document.getElementById("usuario").value = "";
@@ -114,7 +109,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById("observacoes").value = "";
         document.getElementById("urgencia").value = "";
         statusCheckboxes.forEach(cb => cb.checked = false);
-    
+
       } catch (error) {
         console.error("Erro ao cadastrar:", error);
         alert("Erro ao enviar cadastro. Tente novamente.");
@@ -122,7 +117,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Botão Voltar
   const voltarBtn = document.getElementById('voltarBtn');
   if (voltarBtn) {
     voltarBtn.style.backgroundColor = '#f44336';

@@ -61,7 +61,7 @@ body {
 #main-content {
   padding: 20px;
   animation: contentFadeIn 1.2s ease-in forwards;
-  display: block; /* Garantido que o conteúdo estará visível */
+  display: block;
 }
 
 @keyframes contentFadeIn {
@@ -77,7 +77,6 @@ h1 {
   font-size: 28px;
 }
 
-/* Card de veículos */
 .card {
   background-color: #fff;
   border: 2px solid #b30000;
@@ -155,7 +154,6 @@ h1 {
   transform: scale(1.01);
 }
 
-/* Responsividade para dispositivos móveis */
 @media (max-width: 600px) {
   body {
       padding: 10px;
@@ -191,7 +189,6 @@ h1 {
   }
 }
 
-/* Estilo do botão principal com animação fluida */
 .main-btn {
   transition: background-color 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
@@ -203,7 +200,6 @@ h1 {
   box-shadow: 0 0 8px rgba(196, 0, 0, 0.4);
 }
 
-/* Estilo do botão principal resolvido */
 .resolvido-main {
   background-color: #28a745 !important;
   color: #fff !important;
@@ -216,16 +212,14 @@ h1 {
   background-color: #45cc65 !important;
   box-shadow: 0 0 12px rgba(40, 167, 69, 0.8);
 }
-/* Estilo para o botão de voltar */
-/* Estilo para o botão de voltar */
-/* Estilo para o botão de voltar */
+
 #back-button {
   position: fixed !important;
   bottom: 20px !important;
-  left: 50% !important;  /* Centraliza o botão horizontalmente */
-  transform: translateX(-50%) !important;  /* Ajusta para o centro exato */
+  left: 50% !important; 
+  transform: translateX(-50%) !important;
   padding: 12px 24px !important;
-  background-color: #8B0000 !important; /* Cor vermelho escuro */
+  background-color: #8B0000 !important;
   color: white !important;
   font-size: 16px !important;
   border: none !important;
@@ -236,25 +230,23 @@ h1 {
 }
 
 #back-button:hover {
-  background-color: #a40000 !important; /* Um tom mais claro de vermelho escuro */
+  background-color: #a40000 !important;
 }
 
 #back-button:active {
-  transform: translateX(-50%) scale(0.95) !important; /* Animação de clique */
+  transform: translateX(-50%) scale(0.95) !important;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
-/* Estilo para o botão de "Marcar como Resolvido" quando o veículo estiver resolvido */
 .resolvido-main {
-  background-color: #006400; /* Cor verde para "Resolvido" */
+  background-color: #006400;
   color: white;
   cursor: default;
 }
 
 .resolver-btn.resolvido {
-  background-color: #006400; /* Cor verde mais escura para o botão resolvido */
+  background-color: #006400;
   cursor: default;
 }
-/* Container da pesquisa - Centraliza e define margem */
 .search-container {
   display: flex;
   justify-content: center;
@@ -265,39 +257,34 @@ h1 {
   position: relative;
 }
 
-/* Estilo para o campo de pesquisa */
 #search-input {
   padding: 15px;
   font-size: 18px;
   width: 100%;
   max-width: 500px;
-  border-radius: 50px; /* Bordas arredondadas */
+  border-radius: 50px;
   border: 2px solid #ccc;
   background-color: #fff;
   transition: width 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   outline: none;
   color: #333;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Efeito de foco na barra de pesquisa */
 #search-input:focus {
   border-color: #007bff;
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
-/* Placeholder customizado */
 #search-input::placeholder {
   color: #aaa;
   font-style: italic;
 }
 
-/* Efeito ao digitar */
 #search-input:focus::placeholder {
-  color: transparent; /* Esconde o placeholder quando o input tem foco */
+  color: transparent; 
 }
 
-/* Animação de transição do input */
 @keyframes expandWidth {
   from {
     width: 100%;
@@ -307,7 +294,6 @@ h1 {
   }
 }
 
-/* Efeito responsivo para mobile */
 @media (max-width: 768px) {
   #search-input {
     max-width: 90%;
@@ -316,10 +302,9 @@ h1 {
   }
 }
 
-/* A barra de pesquisa começa mais compacta e expande quando o usuário foca */
 #search-input:focus {
   animation: expandWidth 0.4s ease-out forwards;
-  width: 120%; /* Aumenta a largura ao focar */
+  width: 120%;
   border-color: #007bff;
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }

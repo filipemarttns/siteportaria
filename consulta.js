@@ -18,12 +18,13 @@ const users = {
   "Trafego - Rouxinol": "trafego2025",
   "CCO - Rouxinol": "controlerotas2025",
   "Mecanica - Rouxinol": "mecanicarouxinol2025",
-  "Analista - Rouxinol": "analistarouxinol2026",
+  "2396": "12082024",
   "Limpeza - Rouxinol": "limopezarouxinol",
   "Manutenção - Rouxinol": "manutençãorouxinol2025",
-  "Supervisor - Rouxinol": "supervisor@2025",
+  "1774": "Victor@123",
   "Clever - Rouxinol": "clevercastro@2026",
-  "Analista - Maxsim": "analistadados2"
+  "2396": "12082024",
+  "1207": "j2025",
 };
 
 const statusPermitidoPorUsuario = {
@@ -33,9 +34,10 @@ const statusPermitidoPorUsuario = {
   "analistarouxinol2026": null,
   "limopezarouxinol": ["Limpar"],
   "manutençãorouxinol2025": ["Limpar"],
-  "supervisor@2025": null,
+  "Victor@123": null,
   "clevercastro@2026": null,
-  "analistadados2": null
+  "12082024": null,
+  "j2025": null,
 };
 
 function obterUsuarioAtual() {
@@ -71,7 +73,6 @@ async function carregarDados(placaPesquisa = "") {
 
       if (!podeVer) return;
 
-      // Se houver uma placa de pesquisa, filtra pelo número da placa
       if (placaPesquisa && !data.placa.toLowerCase().includes(placaPesquisa.toLowerCase())) {
         return;
       }
@@ -79,21 +80,18 @@ async function carregarDados(placaPesquisa = "") {
       vehiclesData.push({ data, docId });
     });
 
-    // Ordena os veículos com base na urgência e se estão resolvidos
     vehiclesData.sort((a, b) => {
-      const urgenciaA = a.data.urgencia || "Baixa"; // Assumindo que "Baixa" seja a urgência mais baixa
+      const urgenciaA = a.data.urgencia || "Baixa";
       const urgenciaB = b.data.urgencia || "Baixa";
 
-      const prioridades = ["Alta", "Média", "Baixa"]; // Definindo prioridades
+      const prioridades = ["Alta", "Média", "Baixa"];
 
-      // Caso o veículo esteja resolvido, ele deve aparecer por último
       if (a.data.resolvido_por && !b.data.resolvido_por) {
         return 1;
       } else if (!a.data.resolvido_por && b.data.resolvido_por) {
         return -1;
       }
 
-      // Se ambos estiverem resolvidos ou não, ordena pela urgência
       return prioridades.indexOf(urgenciaA) - prioridades.indexOf(urgenciaB);
     });
 
@@ -159,7 +157,6 @@ async function carregarDados(placaPesquisa = "") {
   }
 }
 
-// Adiciona o evento de pesquisa
 document.getElementById('search-input').addEventListener('input', (event) => {
   const placaPesquisa = event.target.value;
   carregarDados(placaPesquisa);
