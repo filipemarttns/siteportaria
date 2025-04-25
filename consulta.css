@@ -251,14 +251,9 @@ h1 {
 }
 
 .resolver-btn.resolvido {
-  background-color: #28a745 !important; /* VERDE */
-  pointer-events: none;
-  cursor: not-allowed;
-  color: white;
-  box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
-  transform: scale(1.01);
+  background-color: #006400; /* Cor verde mais escura para o botão resolvido */
+  cursor: default;
 }
-
 /* Container da pesquisa - Centraliza e define margem */
 .search-container {
   display: flex;

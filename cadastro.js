@@ -80,13 +80,13 @@ window.addEventListener('DOMContentLoaded', () => {
             status = "resolvido";
             resolvido = true;
           }
-        
+
           const docRef = await addDoc(collection(db, "veiculos"), {
             data_hora,
             hodometro,
             motorista,
             movimentacao,
-            observacoes,
+            observacoes, 
             placa,
             status: [status],
             urgencia,
