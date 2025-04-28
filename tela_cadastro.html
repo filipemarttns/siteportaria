@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cadastro de Veículo</title>
   <link rel="stylesheet" href="cadastro.css" />
 </head>
+
 <body>
+
   <div class="form-container">
     <h2>Cadastro de Veículo</h2>
 
@@ -21,11 +24,10 @@
 
     <label for="placa">Número de Frota</label>
     <input type="text" id="placa" placeholder="Número do veículo" required/>
-
     <label for="hodometro">Hodômetro</label>
     <input type="text" id="hodometro" placeholder="Digite a quilometragem" required/>
-
     <label for="movimentacao">Tipo de Movimentação</label>
+
     <select id="movimentacao" required>
       <option value="">Selecione</option>
       <option value="Entrada">Entrada</option>
@@ -34,8 +36,8 @@
 
     <label for="motorista">Motorista</label>
     <input type="text" id="motorista" placeholder="Nome do motorista" required/>
-
     <label>Status</label>
+
     <div class="checkboxes">
       <div class="checkboxes">
         <label><input type="checkbox" value="Está OK"> Está OK</label>
@@ -48,13 +50,12 @@
         <label><input type="checkbox" value="Borracharia"> Borracharia</label>
         <label><input type="checkbox" value="Abastecimento"> Abastecimento</label>
       </div>
-      
     </div>
 
     <label for="observacoes">Observações</label>
     <textarea id="observacoes" placeholder="Digite observações sobre o veículo"></textarea>
-
     <label for="urgencia">Urgência</label>
+
     <select id="urgencia" required>
       <option value="">Selecione a urgência</option>
       <option value="Baixa">Baixa</option>
@@ -67,10 +68,10 @@
       <button id="cadastrarBtn">Cadastrar</button>
       <button id="voltarBtn" onclick="window.location.href='tela_inicial.html'">Voltar</button>
     </div>
-
     <p id="statusMessage"></p> 
   </div>
-
   <script type="module" src="cadastro.js"></script>
+
 </body>
+
 </html>
