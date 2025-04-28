@@ -5,7 +5,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBSLrxQH6k1XGWq93WYENzplqJ6DRTqEf8",
   authDomain: "controle-de-portaria-c2ba6.firebaseapp.com",
   projectId: "controle-de-portaria-c2ba6",
-  storageBucket: "controle-de-portaria-c2ba6.firebasestorage.app",
+  storageBucket: "controle-de-portaria-c2ba6.appspot.com",
   messagingSenderId: "656428327600",
   appId: "1:656428327600:web:ccf86031f62c46360d9175",
   measurementId: "G-05W3SNZFVV"
@@ -18,12 +18,11 @@ const users = {
   "Trafego - Rouxinol": "trafego2025",
   "CCO - Rouxinol": "controlerotas2025",
   "Mecanica - Rouxinol": "mecanicarouxinol2025",
-  "2309": "eldin",
+  "2396": "12082024",
   "Limpeza - Rouxinol": "limopezarouxinol",
   "Manutenção - Rouxinol": "manutençãorouxinol2025",
   "1774": "Victor@123",
   "Clever - Rouxinol": "clevercastro@2026",
-  "2396": "12082024",
   "1207": "j2025",
 };
 
@@ -31,7 +30,7 @@ const statusPermitidoPorUsuario = {
   "trafego2025": null,
   "controlerotas2025": null,
   "mecanicarouxinol2025": ["Abastecer", "Manutenção preventiva", "Manutenção corretiva"],
-  "eldin": null,
+  "analistarouxinol2026": null,
   "limopezarouxinol": ["Limpar"],
   "manutençãorouxinol2025": ["Limpar"],
   "Victor@123": null,
@@ -53,6 +52,7 @@ async function carregarDados(placaPesquisa = "") {
   try {
     const snapshot = await getDocs(collection(db, "veiculos"));
     container.innerHTML = "";
+
     if (snapshot.empty) {
       container.innerHTML = "<p>Nenhum dado encontrado.</p>";
       return;
@@ -83,14 +83,10 @@ async function carregarDados(placaPesquisa = "") {
     vehiclesData.sort((a, b) => {
       const urgenciaA = a.data.urgencia || "Baixa";
       const urgenciaB = b.data.urgencia || "Baixa";
-
       const prioridades = ["Alta", "Média", "Baixa"];
 
-      if (a.data.resolvido_por && !b.data.resolvido_por) {
-        return 1;
-      } else if (!a.data.resolvido_por && b.data.resolvido_por) {
-        return -1;
-      }
+      if (a.data.resolvido_por && !b.data.resolvido_por) return 1;
+      if (!a.data.resolvido_por && b.data.resolvido_por) return -1;
 
       return prioridades.indexOf(urgenciaA) - prioridades.indexOf(urgenciaB);
     });
@@ -110,7 +106,7 @@ async function carregarDados(placaPesquisa = "") {
 
       const details = document.createElement("div");
       details.className = "details";
-      details.innerHTML = ` 
+      details.innerHTML = `
         <p><strong>Data/Hora:</strong> ${data.data_hora}</p>
         <p><strong>Movimentação:</strong> ${data.movimentacao}</p>
         <p><strong>Urgência:</strong> ${data.urgencia}</p>
@@ -131,82 +127,76 @@ async function carregarDados(placaPesquisa = "") {
       const resolverBtn = details.querySelector(`#btn-${docId}`);
       if (!data.resolvido_por) {
         resolverBtn.onclick = async () => {
-          const statusArray = Array.isArray(data.status) ? data.status : [data.status];
-        
-          // Verifica se é tarefa de limpeza
-          const isLimpeza = statusArray.includes("Limpeza") || statusArray.includes("Limpar");
-        
+          const isLimpeza = statusArray.some(status => ["limpeza", "limpar"].includes(status.toLowerCase()));
+
+
           if (isLimpeza) {
-            // Exibe o popup de tipo de limpeza
             const popup = document.getElementById("popup-limpeza");
             popup.style.display = "flex";
-        
+
             const confirmar = document.getElementById("confirmar-limpeza");
             const cancelar = document.getElementById("cancelar-limpeza");
-        
+
             const confirmarHandler = async () => {
               const selecionado = document.querySelector('input[name="tipoLimpeza"]:checked');
               if (!selecionado) {
                 alert("Por favor, selecione um tipo de limpeza.");
                 return;
               }
-        
+
               const tipoLimpeza = selecionado.value;
-        
+
               try {
                 await updateDoc(doc(db, "veiculos", docId), {
                   resolvido_por: nomeUsuario || "Web",
                   tipo_limpeza: tipoLimpeza,
                   status: tipoLimpeza
                 });
-        
+
                 details.querySelector(`#resolvido-${docId}`).textContent = nomeUsuario || "Web";
                 resolverBtn.textContent = "Resolvido";
                 resolverBtn.classList.add("resolvido");
                 resolverBtn.disabled = true;
                 button.classList.add("resolvido-main");
                 button.style.cursor = "default";
-        
+
                 popup.style.display = "none";
                 confirmar.removeEventListener("click", confirmarHandler);
                 cancelar.removeEventListener("click", cancelarHandler);
-        
+
               } catch (error) {
                 console.error("Erro ao atualizar tipo de limpeza: ", error);
               }
             };
-        
+
             const cancelarHandler = () => {
               popup.style.display = "none";
               confirmar.removeEventListener("click", confirmarHandler);
               cancelar.removeEventListener("click", cancelarHandler);
             };
-        
+
             confirmar.addEventListener("click", confirmarHandler);
             cancelar.addEventListener("click", cancelarHandler);
-        
+
             return;
-          
           }
-        
-          // Se não for limpeza, apenas marca como resolvido
+
           try {
             await updateDoc(doc(db, "veiculos", docId), {
               resolvido_por: nomeUsuario || "Web"
             });
-        
+
             details.querySelector(`#resolvido-${docId}`).textContent = nomeUsuario || "Web";
             resolverBtn.textContent = "Resolvido";
             resolverBtn.classList.add("resolvido");
             resolverBtn.disabled = true;
             button.classList.add("resolvido-main");
             button.style.cursor = "default";
-        
+
           } catch (error) {
             console.error("Erro ao marcar como resolvido: ", error);
           }
         };
-        
       }
 
       card.appendChild(button);

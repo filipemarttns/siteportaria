@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -18,22 +19,22 @@
 
   <button id="back-button" onclick="window.history.back()">Voltar</button>
 
+  <div id="popup-limpeza" class="popup" style="display:none;">
+    <div class="popup-content">
+      <h3>Selecione o tipo de limpeza realizada:</h3>
+      
+      <label><input type="radio" name="tipoLimpeza" value="RETORNO"> RETORNO</label><br>
+      <label><input type="radio" name="tipoLimpeza" value="GERAL FINA"> GERAL FINA</label><br>
+      <label><input type="radio" name="tipoLimpeza" value="COMPLETA"> COMPLETA</label><br><br>
+      
+      <button id="confirmar-limpeza">Confirmar</button>
+      <button id="cancelar-limpeza">Cancelar</button>
+    </div>
+  </div>
+
   <script type="module" src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js"></script>
-
   <script type="module" src="config.js"></script>
-
   <script type="module" src="consulta.js?v=10" defer></script>
 </body>
-<div id="popup" class="popup">
-  <div class="popup-content">
-    <h3>Selecione o tipo de limpeza realizada:</h3>
-    <button onclick="selecionarTipo('Retorno')">RETORNO</button>
-    <button onclick="selecionarTipo('Geral fina')">GERAL FINA</button>
-    <button onclick="selecionarTipo('Completa')">COMPLETA</button>
-    <br><br>
-    <button onclick="confirmarLimpeza()">Confirmar</button>
-    <button onclick="fecharPopup()">Cancelar</button>
-  </div>
-</div>
 </html>
